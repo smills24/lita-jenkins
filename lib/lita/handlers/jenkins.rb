@@ -4,6 +4,8 @@ require 'base64'
 module Lita
   module Handlers
     class Jenkins < Handler
+      require 'uri'
+      
       class << self
         attr_accessor :jobs
       end
@@ -24,7 +26,7 @@ module Lita
       def jenkins_build(response)
         if job = jobs[response.matches.last.last.to_i - 1]
           url    = Lita.config.handlers.jenkins.url
-          path   = "#{url}/job/#{job['name']}/build"
+          path   = URI::encode "#{url}/job/#{job['name']}/build"
 
           http_resp = http.post(path) do |req|
             req.headers = headers
