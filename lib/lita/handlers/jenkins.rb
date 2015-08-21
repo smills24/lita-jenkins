@@ -23,7 +23,7 @@ module Lita
         'jenkins b(uild) <job_id>' => 'builds the job specified by job_id. List jobs to get ID.'
       }
 
-      route /b(?:uild)? hotfix (\d+)/i, :jenkins_build, command: true, restrict_to: [:jenkins_admins], help: {
+      route /b(?:uild)? hotfix/i, :jenkins_build, command: true, restrict_to: [:jenkins_admins], help: {
           'build hotfix' => 'builds all the hotfix builds.'
       }
 
