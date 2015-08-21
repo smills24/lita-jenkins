@@ -23,6 +23,20 @@ module Lita
         'jenkins b(uild) <job_id>' => 'builds the job specified by job_id. List jobs to get ID.'
       }
 
+      route /b(?:uild)? hotfix (\d+)/i, :jenkins_build, command: true, restrict_to: [:jenkins_admins], help: {
+          'build hotfix' => 'builds all the hotfix builds.'
+      }
+
+      def build_hotfix(response)
+        path   = URI::encode "#{url}/job/29/build"
+
+        if http_resp.status == 201
+          response.reply "(#{http_resp.status}) Hotfix built: #{job['name']} #{url}/job/#{job['name']}"
+        else
+          response.reply http_resp.body
+        end
+      end
+
       def jenkins_build(response)
         if job = jobs[response.matches.last.last.to_i - 1]
           url    = Lita.config.handlers.jenkins.url
